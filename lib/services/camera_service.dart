@@ -35,14 +35,17 @@ class CameraService {
           .toDart;
 
       final video = web.HTMLVideoElement();
-      video.srcObject = _stream;
       video.autoplay = true;
       video.muted = true;
       video.setAttribute('playsinline', 'true');
+      video.setAttribute('webkit-playsinline', 'true');
       video.style.width = '100%';
       video.style.height = '100%';
       video.style.objectFit = 'cover';
+      video.srcObject = _stream;
       _video = video;
+
+      video.play();
 
       // Wait for metadata (stream dimensions known)
       await video.onLoadedMetadata.first.timeout(
