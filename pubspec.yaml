@@ -1,0 +1,29 @@
+name: face_poc
+description: Face Recognition POC - Browser-based face registration and matching
+
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Modern web interop (replaces dart:html + dart:js for dart2wasm)
+  web: ^1.1.0
+
+  # Local storage for embeddings
+  shared_preferences: ^2.3.0
+
+  # UI
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
