@@ -41286,14 +41286,16 @@ s=7
 return A.O(A.eh(j.window.navigator.mediaDevices.getUserMedia(m),t.m),$async$i0)
 case 7:n.b=b
 l=j.document.createElement("video")
-l.srcObject=n.b
 l.autoplay=!0
 l.muted=!0
 l.setAttribute("playsinline","true")
+l.setAttribute("webkit-playsinline","true")
 l.style.width="100%"
 l.style.height="100%"
 l.style.objectFit="cover"
+l.srcObject=n.b
 n.a=l
+l.play()
 s=8
 return A.O(new A.C_(l,"loadedmetadata",!1,t.Ds).ga1(0).ao6(B.Df,new A.Xi()),$async$i0)
 case 8:n.c=!0
