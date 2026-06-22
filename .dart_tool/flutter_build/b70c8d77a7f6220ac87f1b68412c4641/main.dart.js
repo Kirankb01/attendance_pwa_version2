@@ -41280,7 +41280,7 @@ A.Xh.prototype={
 i0(){var s=0,r=A.L(t.y),q,p=2,o=[],n=this,m,l,k,j,i,h
 var $async$i0=A.M(function(a,b){if(a===1){o.push(b)
 s=p}for(;;)switch(s){case 0:p=4
-m={video:{width:640,height:480,facingMode:"user"},audio:!1}
+m={video:{facingMode:"user"},audio:!1}
 j=v.G
 s=7
 return A.O(A.eh(j.window.navigator.mediaDevices.getUserMedia(m),t.m),$async$i0)
