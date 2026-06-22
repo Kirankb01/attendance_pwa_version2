@@ -24,8 +24,6 @@ class CameraService {
       final constraints = web.MediaStreamConstraints(
         video: web.MediaTrackConstraints(
           facingMode: 'user'.toJS,
-          width: 640.toJS,
-          height: 480.toJS,
         ),
         audio: false.toJS,
       );
