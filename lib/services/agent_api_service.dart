@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
 
 class AgentApiService {
-  static const String baseUrl = 'https://janathamilk.momsuat.com';
+  // Use relative path in production (to utilize Vercel's proxy) and full URL in debug
+  static const String baseUrl = kReleaseMode ? '' : 'https://janathamilk.momsuat.com';
   
   String? _apiToken;
 

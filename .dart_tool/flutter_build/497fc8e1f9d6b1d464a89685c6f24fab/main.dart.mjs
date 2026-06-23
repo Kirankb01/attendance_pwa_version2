@@ -801,6 +801,10 @@ class CompiledApp {
       _11434: (x0,x1) => { x0.objectFit = x1 },
       _11930: (x0,x1) => { x0.width = x1 },
       _12298: x0 => x0.name,
+      _13043: () => globalThis.isInstallAvailable(),
+      _13044: () => globalThis.promptInstall(),
+      _13045: (module,f) => finalizeWrapper(f, function() { return module.exports._13045(f,arguments.length) }),
+      _13046: x0 => { globalThis.onInstallAvailable = x0 },
 
     };
 

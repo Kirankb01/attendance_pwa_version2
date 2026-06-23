@@ -42385,7 +42385,7 @@ var $async$zA=A.L(function(a,b){if(a===1){o.push(b)
 s=p}for(;;)switch(s){case 0:p=4
 j=t.N
 s=7
-return A.G(A.aAX(A.h9("https://janathamilk.momsuat.com/api/method/api_janatha.api.user.login"),A.an(["username","ashkar.vk@example.com","password","frappe@123"],j,j),null),$async$zA)
+return A.G(A.aAX(A.h9("/api/method/api_janatha.api.user.login"),A.an(["username","ashkar.vk@example.com","password","frappe@123"],j,j),null),$async$zA)
 case 7:m=b
 if(m.b===200){j=m
 l=B.aH.nr(A.apW(A.ap5(j.e)).es(j.w),null)
@@ -42424,7 +42424,7 @@ return A.G(n.zA(),$async$uP)
 case 5:if(!d){q=!1
 s=1
 break}case 4:p=7
-m=A.h9("https://janathamilk.momsuat.com/api/method/api_janatha.api.agent_register.make_agent_register")
+m=A.h9("/api/method/api_janatha.api.agent_register.make_agent_register")
 g=t.N
 l=A.an(["args",A.an(["user_id","ashkar.vk@example.com","name","","agent_name",a,"latitude","9.08","longitude","90.20","posting_date","2021-02-03","agent_category","Milk Booth","mobile_no","9778833744","whats_app_no","9778833744","address_line_1","address 1","address_line_2","address 2","city",b,"state","Kerala","country","India","postal_code","678993","status","Active"],g,g)],g,t.z)
 k=A.r(g,g)
