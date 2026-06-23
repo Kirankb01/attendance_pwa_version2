@@ -158,6 +158,36 @@
         img.src = base64.startsWith('data:') ? base64 : `data:image/jpeg;base64,${base64}`;
       });
     }
+
+    // ─── PWA Install Prompt ─────────────────────────────────────────────────
+    window.deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      window.deferredPrompt = e;
+      console.log('[FacePOC] beforeinstallprompt event fired and captured');
+      // Notify Flutter that install is available (if callback registered)
+      if (window.onInstallAvailable) {
+        window.onInstallAvailable();
+      }
+    });
+
+    window.promptInstall = async function() {
+      if (window.deferredPrompt) {
+        window.deferredPrompt.prompt();
+        const { outcome } = await window.deferredPrompt.userChoice;
+        console.log(`[FacePOC] User response to the install prompt: ${outcome}`);
+        window.deferredPrompt = null;
+        return outcome === 'accepted';
+      }
+      return false;
+    };
+    
+    window.isInstallAvailable = function() {
+      return window.deferredPrompt !== null && window.deferredPrompt !== undefined;
+    };
   </script>
 
   <!-- Flutter bootstrap -->
