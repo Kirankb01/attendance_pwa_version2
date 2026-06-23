@@ -4,27 +4,24 @@ import 'package:http/http.dart' as http;
 class AgentApiService {
   static const String baseUrl = 'https://janathamilk.momsuat.com';
   
-  String? _sessionCookie;
+  String? _apiToken;
 
-  /// Authenticate and get the session cookie
+  /// Authenticate and get the API token
   Future<bool> login() async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/api/method/login'),
+        Uri.parse('$baseUrl/api/method/api_janatha.api.user.login'),
         body: {
-          'usr': 'ashkar.vk@example.com',
-          'pwd': 'frappe@123',
+          'username': 'ashkar.vk@example.com',
+          'password': 'frappe@123',
         },
       );
 
       if (response.statusCode == 200) {
-        // Extract the session cookie
-        final rawCookie = response.headers['set-cookie'];
-        if (rawCookie != null) {
-          _sessionCookie = rawCookie.split(';').firstWhere(
-                (c) => c.startsWith('sid='),
-                orElse: () => '',
-              );
+        // Extract the token from the JSON response
+        final responseData = jsonDecode(response.body);
+        if (responseData['token'] != null) {
+          _apiToken = responseData['token'];
         }
         return true;
       } else {
@@ -39,8 +36,8 @@ class AgentApiService {
 
   /// Register agent with dummy data for other fields
   Future<bool> registerAgent({required String agentName, required String city}) async {
-    // If not logged in or no cookie, attempt to login first
-    if (_sessionCookie == null || _sessionCookie!.isEmpty) {
+    // If not logged in or no token, attempt to login first
+    if (_apiToken == null || _apiToken!.isEmpty) {
       final loggedIn = await login();
       if (!loggedIn) return false;
     }
@@ -74,8 +71,8 @@ class AgentApiService {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          if (_sessionCookie != null && _sessionCookie!.isNotEmpty)
-            'Cookie': _sessionCookie!,
+          if (_apiToken != null && _apiToken!.isNotEmpty)
+            'Authorization': 'Basic $_apiToken',
         },
         body: jsonEncode(payload),
       );
