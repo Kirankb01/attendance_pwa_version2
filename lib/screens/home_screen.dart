@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/embedding_storage.dart';
 import '../models/face_embedding.dart';
 import '../widgets/model_status_banner.dart';
+import '../services/pwa_service.dart';
 import 'register_screen.dart';
 import 'match_screen.dart';
 import 'agent_register_screen.dart';
@@ -17,11 +18,26 @@ class _HomeScreenState extends State<HomeScreen> {
   final _storage = EmbeddingStorage();
   List<FaceEmbedding> _registered = [];
   bool _modelsReady = false;
+  bool _showInstallButton = false;
 
   @override
   void initState() {
     super.initState();
     _loadRegistered();
+    
+    // Check if install is already available
+    if (PwaService.isInstallAvailable) {
+      _showInstallButton = true;
+    }
+    
+    // Listen for the event if it hasn't fired yet
+    PwaService.setOnInstallAvailable(() {
+      if (mounted) {
+        setState(() {
+          _showInstallButton = true;
+        });
+      }
+    });
   }
 
   Future<void> _loadRegistered() async {
@@ -137,6 +153,35 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             const Spacer(),
+            if (_showInstallButton) ...[
+              GestureDetector(
+                onTap: () async {
+                  final installed = await PwaService.promptInstall();
+                  if (installed && mounted) {
+                    setState(() {
+                      _showInstallButton = false;
+                    });
+                  }
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF7C4DFF).withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: const Color(0xFF7C4DFF).withOpacity(0.4)),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.download, size: 14, color: Color(0xFF7C4DFF)),
+                      SizedBox(width: 4),
+                      Text('Install App', style: TextStyle(color: Color(0xFF7C4DFF), fontSize: 11, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+            ],
             if (_modelsReady)
               Container(
                 padding:
