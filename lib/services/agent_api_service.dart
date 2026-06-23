@@ -1,0 +1,95 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+class AgentApiService {
+  static const String baseUrl = 'https://janathamilk.momsuat.com';
+  
+  String? _sessionCookie;
+
+  /// Authenticate and get the session cookie
+  Future<bool> login() async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/api/method/login'),
+        body: {
+          'usr': 'ashkar.vk@example.com',
+          'pwd': 'frappe@123',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // Extract the session cookie
+        final rawCookie = response.headers['set-cookie'];
+        if (rawCookie != null) {
+          _sessionCookie = rawCookie.split(';').firstWhere(
+                (c) => c.startsWith('sid='),
+                orElse: () => '',
+              );
+        }
+        return true;
+      } else {
+        print('Login failed: ${response.body}');
+        return false;
+      }
+    } catch (e) {
+      print('Error during login: $e');
+      return false;
+    }
+  }
+
+  /// Register agent with dummy data for other fields
+  Future<bool> registerAgent({required String agentName, required String city}) async {
+    // If not logged in or no cookie, attempt to login first
+    if (_sessionCookie == null || _sessionCookie!.isEmpty) {
+      final loggedIn = await login();
+      if (!loggedIn) return false;
+    }
+
+    try {
+      final url = Uri.parse('$baseUrl/api/method/api_janatha.api.agent_register.make_agent_register');
+      
+      final Map<String, dynamic> payload = {
+        "args": {
+          "user_id": "ashkar.vk@example.com",
+          "name": "",
+          "agent_name": agentName,
+          "latitude": "9.08",
+          "longitude": "90.20",
+          "posting_date": "2021-02-03",
+          "agent_category": "Milk Booth",
+          "mobile_no": "9778833744",
+          "whats_app_no": "9778833744",
+          "address_line_1": "address 1",
+          "address_line_2": "address 2",
+          "city": city,
+          "state": "Kerala",
+          "country": "India",
+          "postal_code": "678993",
+          "status": "Active"
+        }
+      };
+
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          if (_sessionCookie != null && _sessionCookie!.isNotEmpty)
+            'Cookie': _sessionCookie!,
+        },
+        body: jsonEncode(payload),
+      );
+
+      if (response.statusCode == 200) {
+        print('Agent registered successfully: ${response.body}');
+        return true;
+      } else {
+        print('Failed to register agent. Status: ${response.statusCode}, Body: ${response.body}');
+        return false;
+      }
+    } catch (e) {
+      print('Error during agent registration: $e');
+      return false;
+    }
+  }
+}

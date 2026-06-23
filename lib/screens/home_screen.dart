@@ -4,6 +4,7 @@ import '../models/face_embedding.dart';
 import '../widgets/model_status_banner.dart';
 import 'register_screen.dart';
 import 'match_screen.dart';
+import 'agent_register_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -221,39 +222,62 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildActionCards(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        Expanded(
-          child: _ActionCard(
-            title: 'Register',
-            subtitle: 'Add a face to the database',
-            icon: Icons.person_add_alt_1,
-            color: const Color(0xFF00D4FF),
-            count: _registered.length,
-            countLabel: 'stored',
-            onTap: () async {
-              await Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => const RegisterScreen()));
-              _loadRegistered();
-            },
-          ),
+        Row(
+          children: [
+            Expanded(
+              child: _ActionCard(
+                title: 'Register',
+                subtitle: 'Add a face to the database',
+                icon: Icons.person_add_alt_1,
+                color: const Color(0xFF00D4FF),
+                count: _registered.length,
+                countLabel: 'stored',
+                onTap: () async {
+                  await Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const RegisterScreen()));
+                  _loadRegistered();
+                },
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: _ActionCard(
+                title: 'Match',
+                subtitle: 'Verify identity from camera',
+                icon: Icons.face_unlock_rounded,
+                color: const Color(0xFF7C4DFF),
+                count: _registered.length,
+                countLabel: 'to match against',
+                onTap: _registered.isEmpty
+                    ? null
+                    : () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (_) => const MatchScreen()));
+                      },
+              ),
+            ),
+          ],
         ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _ActionCard(
-            title: 'Match',
-            subtitle: 'Verify identity from camera',
-            icon: Icons.face_unlock_rounded,
-            color: const Color(0xFF7C4DFF),
-            count: _registered.length,
-            countLabel: 'to match against',
-            onTap: _registered.isEmpty
-                ? null
-                : () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => const MatchScreen()));
-                  },
-          ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              child: _ActionCard(
+                title: 'API Post',
+                subtitle: 'Register Agent via API',
+                icon: Icons.api,
+                color: const Color(0xFF00C87A),
+                count: 0,
+                countLabel: 'Fields',
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const AgentRegisterScreen()));
+                },
+              ),
+            ),
+          ],
         ),
       ],
     );
