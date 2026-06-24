@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
+import 'widgets/debug_overlay.dart';
 
 void main() {
   runApp(const FacePocApp());
@@ -13,6 +14,9 @@ class FacePocApp extends StatelessWidget {
     return MaterialApp(
       title: 'Face Recognition POC',
       debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        return DebugOverlay(child: child!);
+      },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF00D4FF),
