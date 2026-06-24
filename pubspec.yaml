@@ -36,3 +36,4 @@ flutter_icons:
   web:
     generate: true
     image_path: "assets/icon.png"
+

@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
+import 'dart:async';
+import 'dart:js_interop';
+import 'package:web/web.dart' as web;
 
 class AgentApiService {
   // Use relative path in production (to utilize Vercel's proxy) and full URL in debug
@@ -47,13 +50,17 @@ class AgentApiService {
     try {
       final url = Uri.parse('$baseUrl/api/method/api_janatha.api.agent_register.make_agent_register');
       
+      final location = await _getCurrentLocation();
+      final lat = location['latitude']!;
+      final lng = location['longitude']!;
+
       final Map<String, dynamic> payload = {
         "args": {
           "user_id": "ashkar.vk@example.com",
           "name": "",
           "agent_name": agentName,
-          "latitude": "9.08",
-          "longitude": "90.20",
+          "latitude": lat,
+          "longitude": lng,
           "posting_date": "2021-02-03",
           "agent_category": "Milk Booth",
           "mobile_no": "9778833744",
@@ -91,4 +98,37 @@ class AgentApiService {
       return false;
     }
   }
+}
+
+Future<Map<String, String>> _getCurrentLocation() async {
+  final completer = Completer<Map<String, String>>();
+  
+  try {
+    final geolocation = web.window.navigator.geolocation;
+    
+    void onSuccess(web.GeolocationPosition position) {
+      if (completer.isCompleted) return;
+      final lat = position.coords.latitude.toString();
+      final lng = position.coords.longitude.toString();
+      completer.complete({"latitude": lat, "longitude": lng});
+    }
+
+    void onError(web.GeolocationPositionError error) {
+      if (completer.isCompleted) return;
+      print('Geolocation error: ${error.message}');
+      completer.complete({"latitude": "0.0", "longitude": "0.0"});
+    }
+
+    geolocation.getCurrentPosition(
+      onSuccess.toJS,
+      onError.toJS,
+    );
+  } catch (e) {
+    print('Geolocation exception: $e');
+    if (!completer.isCompleted) {
+      completer.complete({"latitude": "0.0", "longitude": "0.0"});
+    }
+  }
+
+  return completer.future;
 }
