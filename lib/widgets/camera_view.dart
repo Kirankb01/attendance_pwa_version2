@@ -98,9 +98,11 @@ class _CameraViewState extends State<CameraView> {
     return Stack(
       alignment: Alignment.center,
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: HtmlElementView(viewType: _viewId!),
+        Positioned.fill(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: HtmlElementView(viewType: _viewId!),
+          ),
         ),
         CustomPaint(size: Size.infinite, painter: _FaceOvalPainter()),
         if (widget.showCaptureButton)

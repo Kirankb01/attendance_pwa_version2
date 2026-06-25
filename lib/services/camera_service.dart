@@ -41,6 +41,9 @@ class CameraService {
       video.muted = true;
       video.setAttribute('playsinline', 'true');
       video.setAttribute('webkit-playsinline', 'true');
+      try {
+        video.playsInline = true;
+      } catch (_) {}
       video.style.width = '100%';
       video.style.height = '100%';
       video.style.objectFit = 'cover';
