@@ -373,6 +373,7 @@ file:///C:/Users/kirankb/Downloads/face_poc_v2/face_poc/lib/main.dart
 file:///C:/Users/kirankb/Downloads/face_poc_v2/face_poc/lib/models/face_embedding.dart
 file:///C:/Users/kirankb/Downloads/face_poc_v2/face_poc/lib/screens/agent_register_screen.dart
 file:///C:/Users/kirankb/Downloads/face_poc_v2/face_poc/lib/screens/home_screen.dart
+file:///C:/Users/kirankb/Downloads/face_poc_v2/face_poc/lib/screens/logs_screen.dart
 file:///C:/Users/kirankb/Downloads/face_poc_v2/face_poc/lib/screens/match_screen.dart
 file:///C:/Users/kirankb/Downloads/face_poc_v2/face_poc/lib/screens/register_screen.dart
 file:///C:/Users/kirankb/Downloads/face_poc_v2/face_poc/lib/services/agent_api_service.dart

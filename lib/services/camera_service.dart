@@ -80,8 +80,16 @@ class CameraService {
     DebugLogger().log('Capturing frame...');
     try {
       final canvas = web.HTMLCanvasElement();
-      canvas.width = _video!.videoWidth;
-      canvas.height = _video!.videoHeight;
+      
+      // Prevent browser freeze by downscaling high-res cameras
+      const double maxW = 640;
+      double scale = 1.0;
+      if (_video!.videoWidth > maxW) {
+        scale = maxW / _video!.videoWidth;
+      }
+      
+      canvas.width = (_video!.videoWidth * scale).toInt();
+      canvas.height = (_video!.videoHeight * scale).toInt();
 
       final ctx = canvas.getContext('2d') as web.CanvasRenderingContext2D?;
       if (ctx == null) {
@@ -92,10 +100,16 @@ class CameraService {
       // Mirror horizontally for selfie feel
       ctx.translate(canvas.width.toDouble(), 0);
       ctx.scale(-1, 1);
-      ctx.drawImage(_video!, 0, 0);
+      ctx.drawImageScaled(
+        _video!, 
+        0, 
+        0, 
+        canvas.width.toDouble(), 
+        canvas.height.toDouble(),
+      );
 
       final dataUrl = canvas.toDataURL('image/jpeg', (quality / 100).toJS);
-      DebugLogger().log('Frame captured successfully');
+      DebugLogger().log('Frame captured at ${canvas.width}x${canvas.height}');
       return dataUrl;
     } catch (e) {
       DebugLogger().log('ERROR capturing frame: $e');

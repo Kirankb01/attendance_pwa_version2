@@ -6,6 +6,7 @@ import '../services/pwa_service.dart';
 import 'register_screen.dart';
 import 'match_screen.dart';
 import 'agent_register_screen.dart';
+import 'logs_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -182,6 +183,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(width: 8),
             ],
+            IconButton(
+              icon: const Icon(Icons.receipt_long, color: Colors.white54),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const LogsScreen()));
+              },
+              tooltip: 'System Logs',
+            ),
             if (_modelsReady)
               Container(
                 padding:
